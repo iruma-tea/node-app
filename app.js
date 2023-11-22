@@ -1,21 +1,37 @@
 import http from "http";
 import fs from "fs";
 import ejs from "ejs";
+import url from "url";
 
 const index_page = fs.readFileSync("./index.ejs", "utf8");
+const style_css = fs.readFileSync("./style.css", "utf8");
 
 const server = http.createServer(getFromClient);
 server.listen(3000);
 console.log('Server start!');
 
 function getFromClient(request, response) {
-    let content = ejs.render(index_page, {
-        title: "Indexページ",
-        content: "これはテンプレートを使ったサンプルページです。",
-    });
-    response.writeHead(200, {'Content-Type': 'text/html'});
-    response.write(content);
-    response.end();
+    let url_parts = url.parse(request.url);
+    switch(url_parts.pathname) {
+        case "/":
+            let content = ejs.render(index_page, {
+                title: "Indexページ",
+                content: "これはテンプレートを使ったサンプルページです。",
+            });
+            response.writeHead(200, {'Content-Type': 'text/html'});
+            response.write(content);
+            response.end();
+            break;
+        case "/style.css":
+            response.writeHead(200, {'Content-Type': 'text/css'});
+            response.write(style_css);
+            response.end();
+            break;
+        default:
+            response.writeHead(200, {'Content-Type': 'text/plain'});
+            response.end("no page...");
+            break;
+    }
 }
 
 // createServerの処理
