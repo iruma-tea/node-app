@@ -1,7 +1,22 @@
 import http from "http";
 import fs from "fs";
 
-const server = http.createServer(
+const server = http.createServer(getFromClient);
+server.listen(3000);
+console.log('Server start!');
+
+// createServerの処理
+function getFromClient(req, res) {
+    let request = req;
+    let response = res;
+    fs.readFile('./index.html', 'UTF-8', (error, data) => {
+        response.writeHead(200, {'Content-Type': 'text/html'});
+        response.write(data);
+        response.end();
+    });
+}
+
+// const server = http.createServer(
     // リスト2-1
     // (request, response) => {
     //     response.end("Hello, Node.js!");
@@ -22,15 +37,13 @@ const server = http.createServer(
     //     response.write('</body></html>');
     //     response.end();
     // }
-    // リスト2-4
-    (request, response) => {
-        fs.readFile('./index.html', "UTF-8", (error, data) => {
-            response.writeHead(200, {'Content-Type': 'text/html'});
-            response.write(data);
-            response.end();
-        });
-    }
-);
+    // リスト2-4, 2-5
+//     (request, response) => {
+//         fs.readFile('./index.html', "UTF-8", (error, data) => {
+//             response.writeHead(200, {'Content-Type': 'text/html'});
+//             response.write(data);
+//             response.end();
+//         });
+//     }
+// );
 
-server.listen(3000);
-console.log('Server start!');
