@@ -12,13 +12,18 @@ server.listen(3000);
 console.log('Server start!');
 
 function getFromClient(request, response) {
-    let url_parts = url.parse(request.url);
+    let url_parts = url.parse(request.url, true);
     let content;
     switch(url_parts.pathname) {
         case "/":
+            content = "これはテンプレートを使ったサンプルページです。";
+            let query = url_parts.query;
+            if (query.msg != undefined) {
+                content += 'あなたは、「' + query.msg + '」と送りました。';
+            }
             content = ejs.render(index_page, {
                 title: "Index",
-                content: "これはテンプレートを使ったサンプルページです。",
+                content: content,
             });
             response.writeHead(200, {'Content-Type': 'text/html'});
             response.write(content);
