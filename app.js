@@ -4,6 +4,7 @@ import ejs from "ejs";
 import url from "url";
 
 const index_page = fs.readFileSync("./index.ejs", "utf8");
+const other_page = fs.readFileSync("./other.ejs", "utf8");
 const style_css = fs.readFileSync("./style.css", "utf8");
 
 const server = http.createServer(getFromClient);
@@ -12,11 +13,21 @@ console.log('Server start!');
 
 function getFromClient(request, response) {
     let url_parts = url.parse(request.url);
+    let content;
     switch(url_parts.pathname) {
         case "/":
-            let content = ejs.render(index_page, {
-                title: "Indexページ",
+            content = ejs.render(index_page, {
+                title: "Index",
                 content: "これはテンプレートを使ったサンプルページです。",
+            });
+            response.writeHead(200, {'Content-Type': 'text/html'});
+            response.write(content);
+            response.end();
+            break;
+        case "/other":
+            content = ejs.render(other_page, {
+                title: "Other",
+                content: "これは新しく用意したページです。",
             });
             response.writeHead(200, {'Content-Type': 'text/html'});
             response.write(content);
