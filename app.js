@@ -70,7 +70,12 @@ console.log("Server start!");
 
 // リスト2-8(start)
 function getFromClient(request, response) {
-  let content = ejs.render(index_page);
+  let content = ejs.render(index_page, {
+    // リスト2-9(start)
+    title: "Indexページ",
+    content: "これはテンプレートを使ったサンプルページです。",
+    // リスト2-9(end)
+  });
   response.writeHead(200, { "Content-Type": "text/html" });
   response.write(content);
   response.end();
