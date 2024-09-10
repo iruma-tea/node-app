@@ -33,13 +33,30 @@ import * as fs from "fs";
 // リスト2-3(end)
 
 // リスト2-5(start)
-const server = http.createServer((request, response) => {
+// const server = http.createServer((request, response) => {
+//   fs.readFile("./index.html", "UTF-8", (error, data) => {
+//     response.writeHead(200, { "Content-Type": "text/html" });
+//     response.write(data);
+//     response.end();
+//   });
+// });
+// リスト2-5(end)
+
+// リスト2-6(start)
+const server = http.createServer(getFromClient);
+// リスト2-6(end)
+
+server.listen(3000);
+console.log("Server start!");
+
+// createServerの処理
+function getFromClient(req, res) {
+  let request = req;
+  let response = res;
+
   fs.readFile("./index.html", "UTF-8", (error, data) => {
     response.writeHead(200, { "Content-Type": "text/html" });
     response.write(data);
     response.end();
   });
-});
-// リスト2-5(end)
-server.listen(3000);
-console.log("Server start!");
+}
