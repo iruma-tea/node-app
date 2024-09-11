@@ -6,6 +6,9 @@ import * as fs from "fs";
 // リスト2-8(start)
 import * as ejs from "ejs";
 // リスト2-8(end)
+// リスト2-13(start)
+import * as url from "url";
+// リスト2-13(end)
 
 // リスト2-1 (start)
 // const server = http.createServer((request, response) => {
@@ -48,6 +51,9 @@ import * as ejs from "ejs";
 // リスト2-8(start)
 const index_page = fs.readFileSync("./index.ejs", "utf-8");
 // リスト2-8(end)
+// リスト2-13(start)
+const style_css = fs.readFileSync("./style.css", "utf-8");
+// リスト2-13(end)
 
 // リスト2-6(start)
 const server = http.createServer(getFromClient);
@@ -70,14 +76,30 @@ console.log("Server start!");
 
 // リスト2-8(start)
 function getFromClient(request, response) {
-  let content = ejs.render(index_page, {
-    // リスト2-9(start)
-    title: "Indexページ",
-    content: "これはテンプレートを使ったサンプルページです。",
-    // リスト2-9(end)
-  });
-  response.writeHead(200, { "Content-Type": "text/html" });
-  response.write(content);
-  response.end();
+  // リスト2-13(start)
+  const url_parts = url.parse(request.url);
+  switch (url_parts.pathname) {
+    case "/":
+      const content = ejs.render(index_page, {
+        // リスト2-9(start)
+        title: "Indexページ",
+        content: "これはテンプレートを使ったサンプルページです。",
+        // リスト2-9(end)
+      });
+      response.writeHead(200, { "Content-Type": "text/html" });
+      response.write(content);
+      response.end();
+      break;
+    case "/style.css":
+      response.writeHead(200, { "Content-Type": "text/css" });
+      response.write(style_css);
+      response.end();
+      break;
+    default:
+      response.writeHead(200, { "Content-Type": "text/plain" });
+      response.end("no page...");
+      break;
+  }
+  // リスト2-13(end)
 }
 // リスト2-8(end)
