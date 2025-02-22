@@ -2,6 +2,7 @@ import * as http from 'http';
 import * as fs from 'fs';
 import * as ejs from 'ejs';
 import * as url from 'url';
+import * as qs from 'querystring';
 
 // リスト２－１
 // let server = http.createServer((request, response) => {
@@ -112,31 +113,53 @@ console.log('Server start!');
 // }
 
 // リスト３－１
+// function getFromClient(request, response) {
+//     let url_parts = url.parse(request.url, true);
+//     switch (url_parts.pathname) {
+//         case '/':
+//             var content = "これはIndexページです。";
+//             var query = url_parts.query;
+//             if (query.msg != undefined) {
+//                 content += 'あなたは、「' + query.msg + '」と送りました。';
+//             }
+//             var content = ejs.render(index_page, {
+//                 title: "Index",
+//                 content: content,
+//             });
+//             response.writeHead(200, {"Content-type": "text/html"});
+//             response.write(content);
+//             response.end();
+//             break;
+//         case '/other':
+//             var content = ejs.render(other_page, {
+//                 title: "Other",
+//                 content: "これは新しく用意したページです。",
+//             });
+//             response.writeHead(200, {'Content-type': "text/html"});
+//             response.write(content);
+//             response.end();
+//             break;
+//         case '/style.css':
+//             response.writeHead(200, {"Content-type": "text/css"});
+//             response.write(style_css);
+//             response.end();
+//             break;
+//         default:
+//             response.writeHead(200, {"Content-type":"text/plain"});
+//             response.end('no page...');
+//             break;
+//     }
+// }
+
+// リスト３－３
 function getFromClient(request, response) {
     let url_parts = url.parse(request.url, true);
     switch (url_parts.pathname) {
         case '/':
-            var content = "これはIndexページです。";
-            var query = url_parts.query;
-            if (query.msg != undefined) {
-                content += 'あなたは、「' + query.msg + '」と送りました。';
-            }
-            var content = ejs.render(index_page, {
-                title: "Index",
-                content: content,
-            });
-            response.writeHead(200, {"Content-type": "text/html"});
-            response.write(content);
-            response.end();
+            response_index(request, response);
             break;
         case '/other':
-            var content = ejs.render(other_page, {
-                title: "Other",
-                content: "これは新しく用意したページです。",
-            });
-            response.writeHead(200, {'Content-type': "text/html"});
-            response.write(content);
-            response.end();
+            response_other(request, response);
             break;
         case '/style.css':
             response.writeHead(200, {"Content-type": "text/css"});
@@ -147,5 +170,54 @@ function getFromClient(request, response) {
             response.writeHead(200, {"Content-type":"text/plain"});
             response.end('no page...');
             break;
+    }
+}
+
+// indexのアクセス処理
+function response_index(request, response) {
+    let msg = "これはIndexページです。";
+    let content = ejs.render(index_page, {
+        title: "Index",
+        content: msg,
+    });
+    response.writeHead(200, {'Content-type': 'text/html'});
+    response.write(content);
+    response.end();
+}
+
+// otherの処理
+function response_other(request, response) {
+    let msg = "これはOtherページです。";
+    // POSTアクセスの場合
+    if (request.method == 'POST') {
+        let body = '';
+
+        // データの受領のイベント処理
+        request.on('data', (data) => {
+            body += data;
+        });
+
+        // データ受信終了後のイベント処理
+        request.on('end', () => {
+            let post_data = qs.parse(body);
+            msg += 'あなたは、「' + post_data.msg + '」と書きました。';
+            let content = ejs.render(other_page, {
+                title: "Other",
+                content: msg,
+            });
+            response.writeHead(200, {"Content-type": "text/html"});
+            response.write(content);
+            response.end();
+        });
+
+    } else {
+        let msg = "ページがありません。";
+        let content = ejs.render(other_page, {
+            title: "Other",
+            content: msg,
+        });
+        response.writeHead(200, {"Content-type": "text/html"});
+        response.write(content);
+        response.end();
     }
 }
