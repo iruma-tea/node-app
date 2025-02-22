@@ -4,6 +4,14 @@ import * as ejs from 'ejs';
 import * as url from 'url';
 import * as qs from 'querystring';
 
+// リスト３－４
+let data = {
+    'Taro': '09-999-9999',
+    'Hanako': '080-888-888',
+    'Sachiko': '070-777-777',
+    'Ichiro': '060-666-666,'
+};
+
 // リスト２－１
 // let server = http.createServer((request, response) => {
 //     response.end('Hello, Node.js!');
@@ -179,6 +187,7 @@ function response_index(request, response) {
     let content = ejs.render(index_page, {
         title: "Index",
         content: msg,
+        data: data, // リスト３－４
     });
     response.writeHead(200, {'Content-type': 'text/html'});
     response.write(content);

@@ -36,10 +36,19 @@
         <!-- リスト２ー１５ -->
         <!-- <p><a href="/other">Other Pageに移動 &gt;&gt;</a></p> -->
         <!-- リスト３－２ -->
-        <form method="post" action="/other">
+        <!-- <form method="post" action="/other">
             <input type="text" name="msg" class="form-control" />
             <input type="submit" value="Click" class="btn btn-primary" />
-        </form>
+        </form> -->
+        <!-- リスト３－４ -->
+         <table class="table">
+            <% for(let key in data) { %>
+                <tr>
+                    <th><%=key %></th>
+                    <td><%=data[key] %></td>
+                </tr>
+            <% }%>
+         </table>
     </div>
 </body>
 </html>
