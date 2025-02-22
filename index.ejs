@@ -41,14 +41,21 @@
             <input type="submit" value="Click" class="btn btn-primary" />
         </form> -->
         <!-- リスト３－４ -->
-         <table class="table">
+         <!-- <table class="table">
             <% for(let key in data) { %>
                 <tr>
                     <th><%=key %></th>
                     <td><%=data[key] %></td>
                 </tr>
             <% }%>
-         </table>
+         </table> -->
+        <!-- リスト３－７ -->
+        <table class="table">
+            <% let id = 0 %>
+            <% for(let key in data) { %>
+                <%- include('data_item', {id: ++id, key:key, val:[data[key]]})%>
+            <% } %>
+        </table>
     </div>
 </body>
 </html>

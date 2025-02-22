@@ -188,6 +188,7 @@ function response_index(request, response) {
         title: "Index",
         content: msg,
         data: data, // リスト３－４
+        filename: 'data_item', // リスト３－８
     });
     response.writeHead(200, {'Content-type': 'text/html'});
     response.write(content);
