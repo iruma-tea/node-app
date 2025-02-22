@@ -50,12 +50,13 @@
             <% }%>
          </table> -->
         <!-- リスト３－７ -->
-        <table class="table">
-            <% let id = 0 %>
+        <!-- リスト３－１０ -->
+        <!-- <table class="table"> -->
+            <% let id = 0; %>
             <% for(let key in data) { %>
-                <%- include('data_item', {id: ++id, key:key, val:[data[key]]})%>
+                <%- include('data_item', {id:++id, key:key, val:[data[key]]})%>
             <% } %>
-        </table>
+        <!-- </table> -->
     </div>
 </body>
 </html>

@@ -12,6 +12,14 @@ let data = {
     'Ichiro': '060-666-666,'
 };
 
+// リスト３－１１
+let data2 = {
+    'Taro': ['taro@yamada', '09-999-999', 'Tokyo'],
+    'Hanako': ['hanako@flower', '080-888-888', 'Yokohama'],
+    'Sachiko': ['sachi@happy', '070-777-777', 'Nagoya'],
+    'Ichiro': ['ichi@baseball', '060-666-666', 'USA'],
+};
+
 // リスト２－１
 // let server = http.createServer((request, response) => {
 //     response.end('Hello, Node.js!');
@@ -196,38 +204,52 @@ function response_index(request, response) {
 }
 
 // otherの処理
+// function response_other(request, response) {
+//     let msg = "これはOtherページです。";
+//     // POSTアクセスの場合
+//     if (request.method == 'POST') {
+//         let body = '';
+
+//         // データの受領のイベント処理
+//         request.on('data', (data) => {
+//             body += data;
+//         });
+
+//         // データ受信終了後のイベント処理
+//         request.on('end', () => {
+//             let post_data = qs.parse(body);
+//             msg += 'あなたは、「' + post_data.msg + '」と書きました。';
+//             let content = ejs.render(other_page, {
+//                 title: "Other",
+//                 content: msg,
+//             });
+//             response.writeHead(200, {"Content-type": "text/html"});
+//             response.write(content);
+//             response.end();
+//         });
+
+//     } else {
+//         let msg = "ページがありません。";
+//         let content = ejs.render(other_page, {
+//             title: "Other",
+//             content: msg,
+//         });
+//         response.writeHead(200, {"Content-type": "text/html"});
+//         response.write(content);
+//         response.end();
+//     }
+// }
+
+// リスト３－１１
 function response_other(request, response) {
     let msg = "これはOtherページです。";
-    // POSTアクセスの場合
-    if (request.method == 'POST') {
-        let body = '';
-
-        // データの受領のイベント処理
-        request.on('data', (data) => {
-            body += data;
-        });
-
-        // データ受信終了後のイベント処理
-        request.on('end', () => {
-            let post_data = qs.parse(body);
-            msg += 'あなたは、「' + post_data.msg + '」と書きました。';
-            let content = ejs.render(other_page, {
-                title: "Other",
-                content: msg,
-            });
-            response.writeHead(200, {"Content-type": "text/html"});
-            response.write(content);
-            response.end();
-        });
-
-    } else {
-        let msg = "ページがありません。";
-        let content = ejs.render(other_page, {
-            title: "Other",
-            content: msg,
-        });
-        response.writeHead(200, {"Content-type": "text/html"});
-        response.write(content);
-        response.end();
-    }
+    let content = ejs.render(other_page, {
+        title: "Other",
+        content: msg,
+        data: data2, 
+        filename: 'data_item',
+    });
+    response.writeHead(200, {"Content-type": "text/html"});
+    response.write(content);
+    response.end();
 }

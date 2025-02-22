@@ -12,6 +12,11 @@
     </header>
     <div role="main">
         <p><%=content %></p>
+        <!-- リスト３－１２ -->
+        <% let id = 0; %>
+        <% for (let key in data) { %>
+            <%- include('data_item', {id:++id, key:key, val:[data[key]]}) %>
+        <% } %>
     </div>
 </body>
 </html>
