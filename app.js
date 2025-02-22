@@ -1,5 +1,6 @@
-import {createServer} from 'http'
-import {readFile} from 'fs'
+import {createServer} from 'http';
+import {readFile, readFileSync} from 'fs';
+import {render} from 'ejs';
 
 // リスト２－１
 // let server = createServer((request, response) => {
@@ -33,20 +34,31 @@ import {readFile} from 'fs'
 //     });
 // });
 
+// リスト２－８
+const index_page = readFileSync('./index.ejs', 'utf-8');
+
 // リスト２－６
-let server = createServer(getFromclient)
+let server = createServer(getFromClient)
 
 server.listen(3000);
 console.log('Server start!');
 
 // リスト２－６
 // createServerの処理
-function getFromclient(req, res) {
-    let request = req;
-    let response = res;
-    readFile('./index.html', 'utf-8', (error, data) => {
-        response.writeHead(200, {"Content-type":"text/html"});
-        response.write(data);
-        response.end();
-    });
+// function getFromClient(req, res) {
+//     let request = req;
+//     let response = res;
+//     readFile('./index.html', 'utf-8', (error, data) => {
+//         response.writeHead(200, {"Content-type":"text/html"});
+//         response.write(data);
+//         response.end();
+//     });
+// }
+
+// リスト２－８
+function getFromClient(request, response) {
+    let content = render(index_page);
+    response.writeHead(200, {"Content-type": "text/html"});
+    response.write(content);
+    response.end();
 }
