@@ -3,7 +3,9 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <!-- <title>Index</title> -->
+    <!-- リスト２－９ -->
+    <title><%=title %></title>
 </head>
 <body>
     <style>
@@ -20,11 +22,13 @@
         }
     </style>
     <header>
-        <h1>Index</h1>
+        <!-- <h1>Index</h1> -->
+        <h1><%=title %></h1>
     </header>
     <div role="main">
-        <p>This is Index Page.</p>
-        <p>これは、EJSを使ったWebページです。</p>
+        <!-- <p>This is Index Page.</p>
+        <p>これは、EJSを使ったWebページです。</p> -->
+        <%=content %>
     </div>
 </body>
 </html>

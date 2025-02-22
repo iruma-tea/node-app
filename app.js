@@ -56,8 +56,19 @@ console.log('Server start!');
 // }
 
 // リスト２－８
+// function getFromClient(request, response) {
+//     let content = render(index_page);
+//     response.writeHead(200, {"Content-type": "text/html"});
+//     response.write(content);
+//     response.end();
+// }
+
+// リスト２－１０
 function getFromClient(request, response) {
-    let content = render(index_page);
+    let content = render(index_page, {
+        title: "Indexページ",
+        content: "これはテンプレートを使ったサンプルページです。",
+    });
     response.writeHead(200, {"Content-type": "text/html"});
     response.write(content);
     response.end();
