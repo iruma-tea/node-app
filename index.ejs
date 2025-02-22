@@ -52,11 +52,27 @@
         <!-- リスト３－７ -->
         <!-- リスト３－１０ -->
         <!-- <table class="table"> -->
-            <% let id = 0; %>
-            <% for(let key in data) { %>
-                <%- include('data_item', {id:++id, key:key, val:[data[key]]})%>
-            <% } %>
+            <%# let id = 0; %>
+            <%# for(let key in data) { %>
+                <%#- include('data_item', {id:++id, key:key, val:[data[key]]})%>
+            <%# } %>
         <!-- </table> -->
+        <!-- リスト３－１３ -->
+        <table class="table">
+            <tr>
+                <th>伝言です!</th>
+            </tr>
+            <tr>
+                <td><%=data.msg %></td>
+            </tr>
+        </table>
+        <form method="post" action="/">
+            <div class="from-group">
+                <label for="msg">MESSAGE</label>
+                <input type="text" name="msg" id="msg" class="form-control">
+            </div>
+            <input type="submit" value="送信" class="btn btn-primary">
+        </form>
     </div>
 </body>
 </html>

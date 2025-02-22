@@ -5,12 +5,12 @@ import * as url from 'url';
 import * as qs from 'querystring';
 
 // リスト３－４
-let data = {
-    'Taro': '09-999-9999',
-    'Hanako': '080-888-888',
-    'Sachiko': '070-777-777',
-    'Ichiro': '060-666-666,'
-};
+// let data = {
+//     'Taro': '09-999-9999',
+//     'Hanako': '080-888-888',
+//     'Sachiko': '070-777-777',
+//     'Ichiro': '060-666-666,'
+// };
 
 // リスト３－１１
 let data2 = {
@@ -19,6 +19,9 @@ let data2 = {
     'Sachiko': ['sachi@happy', '070-777-777', 'Nagoya'],
     'Ichiro': ['ichi@baseball', '060-666-666', 'USA'],
 };
+
+// リスト３ー１４
+let data = {msg: "no message."};
 
 // リスト２－１
 // let server = http.createServer((request, response) => {
@@ -190,15 +193,48 @@ function getFromClient(request, response) {
 }
 
 // indexのアクセス処理
+// function response_index(request, response) {
+//     let msg = "これはIndexページです。";
+//     let content = ejs.render(index_page, {
+//         title: "Index",
+//         content: msg,
+//         data: data, // リスト３－４
+//         filename: 'data_item', // リスト３－８
+//     });
+//     response.writeHead(200, {'Content-type': 'text/html'});
+//     response.write(content);
+//     response.end();
+// }
+
+// リスト３ー１４
 function response_index(request, response) {
-    let msg = "これはIndexページです。";
+    if (request.method == 'POST') {
+        let body = '';
+
+        // データ受信のイベント処理
+        request.on('data', (data) => {
+            body += data;
+        });
+
+        // データ受信終了のイベント
+        request.on('end', () => {
+            data = qs.parse(body);
+            write_index(request, response);
+        });
+    } else {
+        write_index(request, response);
+    }
+}
+
+// リスト３ー１４
+function write_index(request, response) {
+    let msg = "※伝言を表示します。";
     let content = ejs.render(index_page, {
         title: "Index",
         content: msg,
-        data: data, // リスト３－４
-        filename: 'data_item', // リスト３－８
+        data: data,
     });
-    response.writeHead(200, {'Content-type': 'text/html'});
+    response.writeHead(200, {"Content-type": "text/html"});
     response.write(content);
     response.end();
 }
